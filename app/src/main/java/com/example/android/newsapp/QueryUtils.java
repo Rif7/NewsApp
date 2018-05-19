@@ -1,5 +1,11 @@
 package com.example.android.newsapp;
 
+import android.support.annotation.Nullable;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 
 public final class QueryUtils {
@@ -53,7 +60,6 @@ class URLCreator {
  * Object responsible to download the data from given URL.
  */
 class Downloader {
-    private static String LOG_TAG = "Downloader";
     private URL url;
 
     Downloader(String link) throws ConnectionException {
@@ -149,12 +155,76 @@ class Downloader {
  * Object responsible to prepare organize data from json and create objects.
  */
 class Parser {
+    String json;
+
     Parser(String rowData) {
+        json = rowData;
+    }
+
+    private ArrayList<Story> parseResults(JSONArray resultsArray) throws JSONException{
+        ArrayList<Story> stories = new ArrayList<>();
+        for (int i = 0; i < resultsArray.length(); i++) {
+            JSONObject currentStory = resultsArray.getJSONObject(i);
+            stories.add(new Story(
+                    currentStory.getString("webUrl"),
+                    currentStory.getString("webTitle"),
+                    currentStory.getString("sectionName"),
+                    getAuthors(currentStory),
+                    getWebPublicationDate(currentStory)
+            ));
+        }
+        return stories;
+    }
+
+    private String getWebPublicationDate(JSONObject currentStory) throws JSONException {
+        String webPublicationDateKey = "webPublicationDate";
+        if (currentStory.has(webPublicationDateKey)) {
+            return currentStory.getString(webPublicationDateKey);
+        } else{
+            return null;
+        }
+    }
+
+    @Nullable
+    private ArrayList<String> getAuthors(JSONObject currentStory) throws JSONException {
+        String tagsKey = "tags";
+
+        ArrayList<String> authors = new ArrayList<>();
+
+        if (currentStory.has(tagsKey)) {
+            JSONArray tagsArray = currentStory.getJSONArray(tagsKey);
+            for (int i = 0; i < tagsArray.length(); i++) {
+                JSONObject currentTag = tagsArray.getJSONObject(i);
+                String author = getAuthor(currentTag);
+                if (author != null) {
+                    authors.add(author);
+                }
+            }
+        }
+        if (authors.isEmpty()) {
+            return null;
+        } else {
+            return authors;
+        }
 
     }
 
-    public List<Story> createList() {
+    @Nullable
+    private String getAuthor(JSONObject currentTag) throws JSONException {
+        String typeKey = "type";
+        String typeValue = "contributor";
+        String authorKey = "webTitle";
+        if (currentTag.has(typeKey) && currentTag.get(typeKey).equals(typeValue) && currentTag.has(authorKey)) {
+            return currentTag.getString(authorKey);
+        }
         return null;
+    }
+
+    public List<Story> createList() throws JSONException {
+        JSONObject baseJson = new JSONObject(json);
+        JSONObject responseJson = baseJson.getJSONObject("response");
+        JSONArray storiesArray = responseJson.getJSONArray("results");
+        return parseResults(storiesArray);
     }
 
 }

@@ -17,7 +17,7 @@ import java.lang.reflect.Field;
 import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
-public class QueryUtilsTest {
+public class TestDownloader {
     Context appContext;
     String response;
 
