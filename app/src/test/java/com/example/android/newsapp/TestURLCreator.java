@@ -17,7 +17,7 @@ public class TestURLCreator {
     @Test
     public void testBaseUrl(){
         assertEquals("https://content.guardianapis.com/search?&api-key=" + KEY,
-                mCreator.createURL());
+                mCreator.createLink());
     }
 
     @Test
@@ -25,17 +25,17 @@ public class TestURLCreator {
         String toSearch = "debate";
         mCreator.addSearchQuery(toSearch);
         assertEquals("https://content.guardianapis.com/search?q=" + toSearch + "&api-key=" + KEY,
-                mCreator.createURL());
+                mCreator.createLink());
     }
 
     @Test
     public void testSearchWithEmptySpace(){
         String searchParameter = "debate AND economy";
-        String searchResullt = "debate%20AND%20economy";
+        String searchResult = "debate%20AND%20economy";
 
         mCreator.addSearchQuery(searchParameter);
-        assertEquals("https://content.guardianapis.com/search?q=" + searchResullt +  "&api-key=" + KEY,
-                mCreator.createURL());
+        assertEquals("https://content.guardianapis.com/search?q=" + searchResult +  "&api-key=" + KEY,
+                mCreator.createLink());
     }
 
     @Test
@@ -44,7 +44,7 @@ public class TestURLCreator {
         mCreator.addReferencesQuery(toSearch);
         assertEquals("https://content.guardianapis.com/search?&api-key=" + KEY
                         + "&show-references=" + toSearch,
-                mCreator.createURL());
+                mCreator.createLink());
     }
 
 
