@@ -1,9 +1,13 @@
 package com.example.android.newsapp;
 
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -11,7 +15,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<List<Story>> {
-    private static int STORY_LOADER_ID;
+    private static int STORY_LOADER_ID = 1;
 
     private String searchQuery = "Royal Wedding";
     private StoryAdapter storyAdapter;
@@ -27,7 +31,17 @@ public class MainActivity extends AppCompatActivity
         storyAdapter = new StoryAdapter(this, new ArrayList<Story>());
         storyListView.setAdapter(storyAdapter);
 
+
         // Set an item click listener on the ListView
+        storyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Intent websiteIntent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(storyAdapter.getItem(position).getWebUrl()));
+
+                startActivity(websiteIntent);
+            }
+        });
 
         // Fetch data Initialize loader
         LoaderManager loaderManager = getLoaderManager();
@@ -43,6 +57,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onLoadFinished(Loader<List<Story>> loader, List<Story> stories) {
+        storyAdapter.clear();
+
         if (loader != null && !stories.isEmpty()) {
             storyAdapter.addAll(stories);
         }
