@@ -27,6 +27,7 @@ public final class QueryUtils {
             URLCreator urlCreator = new URLCreator();
             urlCreator.addSearchQuery(searchQuery);
             urlCreator.addTagQuery("contributor");
+            urlCreator.orderByNewest();
 
             // Get the data and parse
             Downloader downloader = new Downloader(urlCreator.createLink());
@@ -48,13 +49,14 @@ class URLCreator {
 
     private String searchQuery = "";
     private String references = "";
+    private String orderBy = "";
 
     private String getApiKeyParameter() {
         return "&api-key=" + API_KEY;
     }
 
     public String createLink() {
-        return GUARDIAN_DOMAIN + searchQuery + getApiKeyParameter() + references;
+        return GUARDIAN_DOMAIN + searchQuery + getApiKeyParameter() + references + orderBy;
     }
 
     public void addSearchQuery(String searchQuery) {
@@ -64,6 +66,10 @@ class URLCreator {
             formattedQuery = "\"" + formattedQuery + "\"";
         }
         this.searchQuery = "q=" + formattedQuery;
+    }
+
+    public void orderByNewest() {
+        orderBy = "&order-by=newest";
     }
 
     public void addTagQuery(String references) {

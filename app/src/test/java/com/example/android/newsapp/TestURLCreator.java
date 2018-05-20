@@ -48,5 +48,14 @@ public class TestURLCreator {
                 mCreator.createLink());
     }
 
+    @Test
+    public void testOrderBy(){
+        mCreator.orderByNewest();
+        assertEquals("https://content.guardianapis.com/search?&api-key=" + KEY
+                        + "&order-by=newest",
+                mCreator.createLink());
+    }
+
+
 
 }
