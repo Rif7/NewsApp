@@ -30,20 +30,21 @@ public class TestURLCreator {
 
     @Test
     public void testSearchWithEmptySpace(){
-        String searchParameter = "debate AND economy";
-        String searchResult = "debate%20AND%20economy";
+        String searchParameter = "debate economy";
+        String searchResult = "\"debate%20economy\"";
 
         mCreator.addSearchQuery(searchParameter);
         assertEquals("https://content.guardianapis.com/search?q=" + searchResult +  "&api-key=" + KEY,
                 mCreator.createLink());
     }
 
+
     @Test
     public void testReferences(){
-        String toSearch = "author";
-        mCreator.addReferencesQuery(toSearch);
+        String toSearch = "contributor";
+        mCreator.addTagQuery(toSearch);
         assertEquals("https://content.guardianapis.com/search?&api-key=" + KEY
-                        + "&show-references=" + toSearch,
+                        + "&show-tags=" + toSearch,
                 mCreator.createLink());
     }
 

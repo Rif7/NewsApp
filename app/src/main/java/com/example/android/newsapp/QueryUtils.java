@@ -47,12 +47,16 @@ class URLCreator {
     }
 
     public void addSearchQuery(String searchQuery) {
-        String formattedQuery = searchQuery.replaceAll(" ", "%20");
+        String formattedQuery = searchQuery;
+        if (searchQuery.contains(" ")) {
+            formattedQuery = formattedQuery.replaceAll(" ", "%20");
+            formattedQuery = "\"" + formattedQuery + "\"";
+        }
         this.searchQuery = "q=" + formattedQuery;
     }
 
-    public void addReferencesQuery(String references) {
-        this.references = "&show-references=" + references;
+    public void addTagQuery(String references) {
+        this.references = "&show-tags=" + references;
     }
 }
 
