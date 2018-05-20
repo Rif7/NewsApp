@@ -1,6 +1,7 @@
 package com.example.android.newsapp;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,11 @@ import java.util.Date;
 import java.util.List;
 
 public class StoryAdapter extends ArrayAdapter<Story> {
+    private ArrayList<String> sections;
 
     public StoryAdapter(Context context, List<Story> stories) {
         super(context, 0, stories);
+        sections = new ArrayList<>();
     }
 
     @Override
@@ -41,6 +44,10 @@ public class StoryAdapter extends ArrayAdapter<Story> {
 
         TextView sectionNameView = (TextView) convertView.findViewById(R.id.story_item_section_name);
         sectionNameView.setText(story.getSectionName());
+        if (!sections.contains(story.getSectionName())) {
+            sections.add(story.getSectionName());
+        }
+        sectionNameView.setBackgroundColor(getSectionColor(sections.indexOf(story.getSectionName())));
 
         TextView webTitleView = (TextView) convertView.findViewById(R.id.story_item_web_title);
         webTitleView.setText(story.getWebTitle());
@@ -64,6 +71,51 @@ public class StoryAdapter extends ArrayAdapter<Story> {
     private String formatYear(Date dateObject) {
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy");
         return timeFormat.format(dateObject);
+    }
+    @Override
+    public void clear() {
+        super.clear();
+        sections.clear();
+    }
+
+    private int getSectionColor(int position) {
+        int sectionColorId;
+        switch (position) {
+            case 0:
+                sectionColorId = R.color.section0;
+                break;
+            case 1:
+                sectionColorId = R.color.section1;
+                break;
+            case 2:
+                sectionColorId = R.color.section2;
+                break;
+            case 3:
+                sectionColorId = R.color.section3;
+                break;
+            case 4:
+                sectionColorId = R.color.section4;
+                break;
+            case 5:
+                sectionColorId = R.color.section5;
+                break;
+            case 6:
+                sectionColorId = R.color.section6;
+                break;
+            case 7:
+                sectionColorId = R.color.section7;
+                break;
+            case 8:
+                sectionColorId = R.color.section8;
+                break;
+            case 9:
+                sectionColorId = R.color.section9;
+                break;
+            default:
+                sectionColorId = R.color.section_default;
+                break;
+        }
+        return ContextCompat.getColor(getContext(), sectionColorId);
     }
 
 }
