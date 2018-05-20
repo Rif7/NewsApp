@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +77,6 @@ public class MainActivity extends AppCompatActivity
         populateList(false);
     }
 
-
     private void populateList(boolean isRestart) {
         // Handle no network connectivity
         ConnectivityManager connMgr = (ConnectivityManager)
@@ -94,6 +94,11 @@ public class MainActivity extends AppCompatActivity
             }
         } else {
             emptyListViewMessage.setText(R.string.no_internet_connection);
+            if (isRestart) {
+                Toast connectionBroken = Toast.makeText(getApplicationContext(),
+                        R.string.lost_internet_connection, Toast.LENGTH_LONG);
+                connectionBroken.show();
+            }
         }
     }
 

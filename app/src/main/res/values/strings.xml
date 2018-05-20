@@ -4,4 +4,5 @@
     <string name="no_internet_connection">No internet connection</string>
     <string name="error_info">Problem with connection. Try again</string>
     <string name="initial_search">news</string>
+    <string name="lost_internet_connection">Lost internet connection</string>
 </resources>
