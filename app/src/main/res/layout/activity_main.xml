@@ -1,32 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/list"
-        android:orientation="vertical"
+    <SearchView
+        android:id="@+id/main_search"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@null"
-        android:dividerHeight="0dp"/>
-
-    <!-- Empty List View -->
-    <TextView
-        android:id="@+id/empty_view"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textAppearance="?android:textAppearanceMedium"/>
+        android:iconifiedByDefault="false"
+        android:queryHint="search">
+    </SearchView>
 
-    <!-- Loading bar during fetching data -->
-    <ProgressBar
-        android:id="@+id/loading_indicator"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</RelativeLayout>
+        <ListView
+            android:id="@+id/main_list"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:dividerHeight="0dp"/>
+
+        <!-- Empty List View -->
+        <TextView
+            android:id="@+id/main_empty_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textAppearance="?android:textAppearanceMedium"/>
+
+        <!-- Loading bar during fetching data -->
+        <ProgressBar
+            android:id="@+id/main_loading_indicator"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+</LinearLayout>
