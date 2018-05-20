@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity
 
     private String searchQuery = "Royal Wedding";
     private StoryAdapter storyAdapter;
+    private TextView noStoriesTextView;
 
 
     @Override
@@ -31,6 +33,9 @@ public class MainActivity extends AppCompatActivity
         storyAdapter = new StoryAdapter(this, new ArrayList<Story>());
         storyListView.setAdapter(storyAdapter);
 
+        // Set View for no elements in list
+        noStoriesTextView = (TextView) findViewById(R.id.empty_view);
+        storyListView.setEmptyView(noStoriesTextView);
 
         // Set an item click listener on the ListView
         storyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -57,6 +62,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onLoadFinished(Loader<List<Story>> loader, List<Story> stories) {
+        noStoriesTextView.setText(String.format("%s: %s", getString(R.string.no_articles_with), searchQuery));
+
         storyAdapter.clear();
 
         if (loader != null && !stories.isEmpty()) {
