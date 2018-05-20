@@ -1,6 +1,7 @@
 package com.example.android.newsapp;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,12 +19,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class QueryUtils {
+    private static final String LOG_TAG = QueryUtils.class.getSimpleName();
 
-    public static List<Story> prepareNews() {
-        // Create URL to get data
-        // Get the row data
-        // Parse data
-        // Return List of Stories
+    public static List<Story> prepareNews(String searchQuery) {
+        try {
+            // Create URL to get data
+            URLCreator urlCreator = new URLCreator();
+            urlCreator.addSearchQuery(searchQuery);
+            urlCreator.addTagQuery("contributor");
+
+            // Get the data and parse
+            Downloader downloader = new Downloader(urlCreator.createLink());
+            Parser parser = new Parser(downloader.crateRowData());
+            return parser.createList();
+        } catch (JSONException | ConnectionException e ) {
+            Log.e(LOG_TAG, e.getMessage(), e);
+        }
         return null;
     }
 }

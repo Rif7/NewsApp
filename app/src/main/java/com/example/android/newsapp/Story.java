@@ -1,15 +1,15 @@
 package com.example.android.newsapp;
 
-import android.app.admin.DeviceAdminInfo;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
 public class Story {
     private static final String API_KEY = "edbd5c14-5eed-4f30-ba18-8b621faf2b5b";
+    private static final String UNKNOWN = "UNKNOWN";
 
     private String webUrl;
     private String webTitle;
@@ -65,4 +65,32 @@ public class Story {
         return webPublicationDate;
     }
 
+    public Date getWebPublicationFormattedDate() {
+        return webPublicationDate;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+        s.append("webUrl = ").append(webUrl).append("\n");
+        s.append("webTitle = ").append(webTitle).append("\n");
+        s.append("sectionName = ").append(sectionName).append("\n");
+
+        s.append("authors = ");
+        if (authors != null) {
+            s.append(Arrays.toString(authors.toArray()).replaceAll("/[\\[\\]]/", ""));
+        } else {
+            s.append(UNKNOWN);
+        }
+        s.append("\n");
+
+        s.append("webPublicationDate = ");
+        if (webPublicationDate != null) {
+            s.append(webPublicationDate.toString());
+        } else {
+            s.append(UNKNOWN);
+        }
+        s.append("\n");
+        return s.toString();
+    }
 }
