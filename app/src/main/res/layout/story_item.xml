@@ -1,5 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
-</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/story_item_data"
+        android:layout_width="@dimen/story_item_date_width"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="@dimen/story_item_margin">
+
+        <TextView
+            android:id="@+id/story_item_data_day_month"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textAlignment="center"
+            android:text="14 Nov"/>
+
+        <TextView
+            android:id="@+id/story_item_data_year"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textAlignment="center"
+            android:text="2006"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/story_item_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/story_item_margin"
+        android:layout_marginBottom="@dimen/story_item_margin"
+        android:layout_marginEnd="@dimen/story_item_margin">
+
+        <TextView
+            android:id="@+id/story_item_section_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Music"/>
+
+        <TextView
+            android:id="@+id/story_item_web_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Malcom McLaren: The svengali who created carnage"/>
+
+        <TextView
+            android:id="@+id/story_item_authors"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tim Jonze"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

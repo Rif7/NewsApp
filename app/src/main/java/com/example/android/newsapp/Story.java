@@ -65,10 +65,6 @@ public class Story {
         return webPublicationDate;
     }
 
-    public Date getWebPublicationFormattedDate() {
-        return webPublicationDate;
-    }
-
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
@@ -78,7 +74,7 @@ public class Story {
 
         s.append("authors = ");
         if (authors != null) {
-            s.append(Arrays.toString(authors.toArray()).replaceAll("/[\\[\\]]/", ""));
+            s.append(Arrays.toString(authors.toArray()));
         } else {
             s.append(UNKNOWN);
         }
