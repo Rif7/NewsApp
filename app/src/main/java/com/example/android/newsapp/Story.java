@@ -23,6 +23,10 @@ class Story {
 
     public Story(String webUrl, String webTitle, String sectionName, ArrayList<String> authors, String webPublicationDate) {
         this.webUrl = webUrl;
+        // delete everything  after '|' from title
+        if (webTitle.contains("|")) {
+            webTitle = webTitle.substring(0, webTitle.indexOf('|'));
+        }
         this.webTitle = webTitle;
         this.sectionName = sectionName;
         this.authors = authors;
