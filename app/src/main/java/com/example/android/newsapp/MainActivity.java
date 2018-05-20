@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class MainActivity extends AppCompatActivity
     private String searchQuery = "Royal Wedding";
     private StoryAdapter storyAdapter;
     private TextView noStoriesTextView;
-
+    private ProgressBar loadingIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,9 @@ public class MainActivity extends AppCompatActivity
         // Set View for no elements in list
         noStoriesTextView = (TextView) findViewById(R.id.empty_view);
         storyListView.setEmptyView(noStoriesTextView);
+
+        // Set View for no elements in list
+        loadingIndicator = (ProgressBar) findViewById(R.id.loading_indicator);
 
         // Set an item click listener on the ListView
         storyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -57,14 +61,16 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public Loader<List<Story>> onCreateLoader(int i, Bundle bundle) {
+        storyAdapter.clear();
+        loadingIndicator.setVisibility(View.VISIBLE);
         return new StoryLoader(this, searchQuery);
     }
 
     @Override
     public void onLoadFinished(Loader<List<Story>> loader, List<Story> stories) {
-        noStoriesTextView.setText(String.format("%s: %s", getString(R.string.no_articles_with), searchQuery));
+        loadingIndicator.setVisibility(View.GONE);
 
-        storyAdapter.clear();
+        noStoriesTextView.setText(String.format("%s: %s", getString(R.string.no_articles_with), searchQuery));
 
         if (loader != null && !stories.isEmpty()) {
             storyAdapter.addAll(stories);
