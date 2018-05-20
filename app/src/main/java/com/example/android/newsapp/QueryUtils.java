@@ -18,7 +18,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class QueryUtils {
+final class QueryUtils {
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
 
     public static List<Story> prepareNews(String searchQuery) {
@@ -176,7 +176,7 @@ class Downloader {
  * Object responsible to prepare organize data from json and create objects.
  */
 class Parser {
-    String json;
+    private String json;
 
     Parser(String rowData) {
         json = rowData;

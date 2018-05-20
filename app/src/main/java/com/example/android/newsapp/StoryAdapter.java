@@ -1,5 +1,6 @@
 package com.example.android.newsapp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -14,7 +15,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-public class StoryAdapter extends ArrayAdapter<Story> {
+class StoryAdapter extends ArrayAdapter<Story> {
     private ArrayList<String> sections;
 
     public StoryAdapter(Context context, List<Story> stories) {
@@ -34,26 +35,26 @@ public class StoryAdapter extends ArrayAdapter<Story> {
         View dateView = convertView.findViewById(R.id.story_item_data);
         Date publicationDate = story.getWebPublicationDate();
         if (publicationDate != null) {
-            TextView dayMonthView = (TextView) convertView.findViewById(R.id.story_item_data_day_month);
+            TextView dayMonthView = convertView.findViewById(R.id.story_item_data_day_month);
             dayMonthView.setText(formatDayMonth(publicationDate));
-            TextView yearView = (TextView) convertView.findViewById(R.id.story_item_data_year);
+            TextView yearView = convertView.findViewById(R.id.story_item_data_year);
             yearView.setText(formatYear(publicationDate));
         } else {
             dateView.setVisibility(View.GONE);
         }
 
-        TextView sectionNameView = (TextView) convertView.findViewById(R.id.story_item_section_name);
+        TextView sectionNameView = convertView.findViewById(R.id.story_item_section_name);
         sectionNameView.setText(story.getSectionName());
         if (!sections.contains(story.getSectionName())) {
             sections.add(story.getSectionName());
         }
         sectionNameView.setBackgroundColor(getSectionColor(sections.indexOf(story.getSectionName())));
 
-        TextView webTitleView = (TextView) convertView.findViewById(R.id.story_item_web_title);
+        TextView webTitleView = convertView.findViewById(R.id.story_item_web_title);
         webTitleView.setText(story.getWebTitle());
 
         ArrayList<String> authors = story.getAuthors();
-        TextView authorsView = (TextView) convertView.findViewById(R.id.story_item_authors);
+        TextView authorsView = convertView.findViewById(R.id.story_item_authors);
         if (authors != null) {
             authorsView.setText(Arrays.toString(authors.toArray()).replaceAll("[\\[\\]]", ""));
         } else {
@@ -64,12 +65,12 @@ public class StoryAdapter extends ArrayAdapter<Story> {
     }
 
     private String formatDayMonth(Date dateObject) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd LLL");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd LLL");
         return dateFormat.format(dateObject);
     }
 
     private String formatYear(Date dateObject) {
-        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy");
         return timeFormat.format(dateObject);
     }
     @Override

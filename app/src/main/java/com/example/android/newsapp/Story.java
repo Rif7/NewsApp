@@ -7,8 +7,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
-public class Story {
-    private static final String API_KEY = "edbd5c14-5eed-4f30-ba18-8b621faf2b5b";
+class Story {
     private static final String UNKNOWN = "UNKNOWN";
 
     private String webUrl;

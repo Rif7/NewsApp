@@ -22,7 +22,7 @@ public class QueryUtilsTest {
     }
 
     @Test
-    public void prepareNews() {
+    public void testInvalidResponse() {
         List<Story> list = QueryUtils.prepareNews("yooouu cannottt fiind meee"); // impossible to find query
         assertNotNull(list);
         assertTrue(list.isEmpty());

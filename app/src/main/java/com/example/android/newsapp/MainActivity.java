@@ -21,30 +21,29 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<List<Story>> {
-    private static int STORY_LOADER_ID = 1;
 
-    private String searchQuery = "news";
+    private String searchQuery;
     private StoryAdapter storyAdapter;
     private TextView emptyListViewMessage;
     private ProgressBar loadingIndicator;
-    private SearchView newStorySearchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        searchQuery = getString(R.string.initial_search);
 
         // Set adapter fot ListView
-        ListView storyListView = (ListView) findViewById(R.id.main_list);
+        ListView storyListView = findViewById(R.id.main_list);
         storyAdapter = new StoryAdapter(this, new ArrayList<Story>());
         storyListView.setAdapter(storyAdapter);
 
         // Set View for no elements in list
-        emptyListViewMessage = (TextView) findViewById(R.id.main_empty_view);
+        emptyListViewMessage = findViewById(R.id.main_empty_view);
         storyListView.setEmptyView(emptyListViewMessage);
 
         // Set View for no elements in list
-        loadingIndicator = (ProgressBar) findViewById(R.id.main_loading_indicator);
+        loadingIndicator = findViewById(R.id.main_loading_indicator);
 
 
         // Set an item click listener on the ListView
@@ -59,7 +58,7 @@ public class MainActivity extends AppCompatActivity
         });
 
         // Search new information
-        newStorySearchView = (SearchView) findViewById(R.id.main_search);
+        SearchView newStorySearchView = findViewById(R.id.main_search);
         newStorySearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -87,6 +86,7 @@ public class MainActivity extends AppCompatActivity
         if (networkInfo != null && networkInfo.isConnected()) {
             // Initialize loader to fetch data
             LoaderManager loaderManager = getLoaderManager();
+            final int STORY_LOADER_ID = 1;
             if (!isRestart) {
                 loaderManager.initLoader(STORY_LOADER_ID, null, this);
             } else {
@@ -108,9 +108,11 @@ public class MainActivity extends AppCompatActivity
         storyAdapter.clear();
         loadingIndicator.setVisibility(View.GONE);
 
-        emptyListViewMessage.setText(String.format("%s: %s", getString(R.string.no_articles_with), searchQuery));
-
-        if (loader != null && !stories.isEmpty()) {
+        if (stories == null) {
+            // Connection Error
+            emptyListViewMessage.setText(R.string.error_info);
+        } else if((loader != null && !stories.isEmpty())) {
+            emptyListViewMessage.setText(String.format("%s: %s", getString(R.string.no_articles_with), searchQuery));
             storyAdapter.addAll(stories);
         }
     }

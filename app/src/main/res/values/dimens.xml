@@ -2,4 +2,6 @@
 <resources>
     <dimen name="story_item_date_width">64dp</dimen>
     <dimen name="story_item_margin">8dp</dimen>
+    <dimen name="section_padding">2dp</dimen>
+    <dimen name="date_border">4dp</dimen>
 </resources>

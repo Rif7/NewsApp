@@ -5,7 +5,7 @@ import android.content.Context;
 
 import java.util.List;
 
-public class StoryLoader extends AsyncTaskLoader<List<Story>> {
+class StoryLoader extends AsyncTaskLoader<List<Story>> {
     private String searchQuery;
 
     public StoryLoader(Context context, String searchQuery) {

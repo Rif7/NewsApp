@@ -5,7 +5,7 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="background">#ffffff</color>
-    <color name="dateBorder">#a3a000</color>
+    <color name="date_border">#a3a000</color>
 
     <color name="section0">#8dbf7e</color>
     <color name="section1">#3d6194</color>

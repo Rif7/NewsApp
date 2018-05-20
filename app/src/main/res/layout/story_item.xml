@@ -10,8 +10,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_margin="@dimen/story_item_margin"
-        android:padding="4dp"
-        android:background="@color/dateBorder">
+        android:padding="@dimen/date_border"
+        android:background="@color/date_border">
 
         <TextView
             android:id="@+id/story_item_data_day_month"
@@ -46,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:padding="2dp"
+            android:padding="@dimen/section_padding"
             android:background="@color/section0"
             android:text="Music"/>
 

@@ -1,7 +1,5 @@
 package com.example.android.newsapp;
 
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
@@ -18,15 +16,13 @@ import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
 public class TestDownloader {
-    Context appContext;
-    String response;
+    private String response;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     @Before
     public void preconditions() {
-        appContext = InstrumentationRegistry.getTargetContext();
         response = "NOT CHANGED";
         Log.d("START TEST", "START TEST");
     }
