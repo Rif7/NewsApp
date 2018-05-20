@@ -1,8 +1,11 @@
 package com.example.android.newsapp;
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,7 +24,7 @@ public class MainActivity extends AppCompatActivity
 
     private String searchQuery = "Royal Wedding";
     private StoryAdapter storyAdapter;
-    private TextView noStoriesTextView;
+    private TextView emptyListViewMessage;
     private ProgressBar loadingIndicator;
 
     @Override
@@ -35,8 +38,8 @@ public class MainActivity extends AppCompatActivity
         storyListView.setAdapter(storyAdapter);
 
         // Set View for no elements in list
-        noStoriesTextView = (TextView) findViewById(R.id.empty_view);
-        storyListView.setEmptyView(noStoriesTextView);
+        emptyListViewMessage = (TextView) findViewById(R.id.empty_view);
+        storyListView.setEmptyView(emptyListViewMessage);
 
         // Set View for no elements in list
         loadingIndicator = (ProgressBar) findViewById(R.id.loading_indicator);
@@ -52,17 +55,24 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        // Fetch data Initialize loader
-        LoaderManager loaderManager = getLoaderManager();
-        loaderManager.initLoader(STORY_LOADER_ID, null, this);
-
         // Handle no network connectivity
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            // Initialize loader to fetch data
+            LoaderManager loaderManager = getLoaderManager();
+            loaderManager.initLoader(STORY_LOADER_ID, null, this);
+        } else {
+            emptyListViewMessage.setText(R.string.no_internet_connection);
+        }
     }
 
     @Override
     public Loader<List<Story>> onCreateLoader(int i, Bundle bundle) {
-        storyAdapter.clear();
         loadingIndicator.setVisibility(View.VISIBLE);
+        storyAdapter.clear();
         return new StoryLoader(this, searchQuery);
     }
 
@@ -70,7 +80,7 @@ public class MainActivity extends AppCompatActivity
     public void onLoadFinished(Loader<List<Story>> loader, List<Story> stories) {
         loadingIndicator.setVisibility(View.GONE);
 
-        noStoriesTextView.setText(String.format("%s: %s", getString(R.string.no_articles_with), searchQuery));
+        emptyListViewMessage.setText(String.format("%s: %s", getString(R.string.no_articles_with), searchQuery));
 
         if (loader != null && !stories.isEmpty()) {
             storyAdapter.addAll(stories);
