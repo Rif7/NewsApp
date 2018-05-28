@@ -56,6 +56,15 @@ public class TestURLCreator {
                 mCreator.createLink());
     }
 
+    @Test
+    public void testShowFields(){
+        String toSearch = "shortUrl";
+        mCreator.addShowFieldsQuery(toSearch);
+        assertEquals("https://content.guardianapis.com/search?&api-key=" + KEY
+                        + "&show-fields=" + toSearch,
+                mCreator.createLink());
+    }
+
 
 
 }

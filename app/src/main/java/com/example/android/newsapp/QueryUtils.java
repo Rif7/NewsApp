@@ -50,6 +50,7 @@ class URLCreator {
     private String searchQuery = "";
     private String references = "";
     private String orderBy = "";
+    private String fields = "";
 
     private String getApiKeyParameter() {
         return "&api-key=" + API_KEY;
@@ -74,6 +75,10 @@ class URLCreator {
 
     public void addTagQuery(String references) {
         this.references = "&show-tags=" + references;
+    }
+
+    public void addShowFieldsQuery(String fields) {
+        this.references = "&show-fields=" + fields;
     }
 }
 
