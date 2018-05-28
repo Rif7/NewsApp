@@ -16,12 +16,12 @@ class Story {
 
     // can be null
     private ArrayList<String> authors;
+    private Date webPublicationDate;    // webPublicationDate is received as ISO_INSTANT format
+                                        // "2018-02-21T16:50:39Z"
+    private String imgaeUrl;
 
-    // can be null
-    // webPublicationDate is received in ISO_INSTANT format "2018-02-21T16:50:39Z"
-    private Date webPublicationDate;
-
-    public Story(String webUrl, String webTitle, String sectionName, ArrayList<String> authors, String webPublicationDate) {
+    public Story(String webUrl, String webTitle, String sectionName, ArrayList<String> authors,
+                 String webPublicationDate, String imageUrl) {
         this.webUrl = webUrl;
         // delete everything  after '|' from title
         if (webTitle.contains("|")) {
@@ -35,7 +35,7 @@ class Story {
         } else {
             this.webPublicationDate = null;
         }
-
+        this.imgaeUrl = imageUrl;
     }
 
     private Date setWebPublicationDate(String webPublicationDateAsINSTANT) {
@@ -68,6 +68,8 @@ class Story {
         return webPublicationDate;
     }
 
+    public String getImgaeUrl() { return imgaeUrl; }
+
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
@@ -90,6 +92,15 @@ class Story {
             s.append(UNKNOWN);
         }
         s.append("\n");
+
+        s.append("imageUrl = ");
+        if (imgaeUrl != null) {
+            s.append(imgaeUrl);
+        } else {
+            s.append(UNKNOWN);
+        }
+        s.append("\n");
+
         return s.toString();
     }
 }

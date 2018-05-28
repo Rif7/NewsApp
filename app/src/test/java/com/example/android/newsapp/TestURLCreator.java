@@ -65,6 +65,20 @@ public class TestURLCreator {
                 mCreator.createLink());
     }
 
+    @Test
+    public void testAll() {
+        String toSearch = "debate";
+        mCreator.addSearchQuery(toSearch);
+        String tag = "contributor";
+        mCreator.addTagQuery(tag);
+        mCreator.orderByNewest();
+        String field = "thumbnail";
+        mCreator.addShowFieldsQuery(field);
+        assertEquals("https://content.guardianapis.com/search?q=" + toSearch + "&api-key=" + KEY
+                + "&show-tags=" + tag + "&order-by=newest" + "&show-fields=" + field,
+                mCreator.createLink());
+    }
+
 
 
 }

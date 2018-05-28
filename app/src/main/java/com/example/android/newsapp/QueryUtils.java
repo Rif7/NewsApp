@@ -30,6 +30,7 @@ final class QueryUtils {
             URLCreator urlCreator = new URLCreator();
             urlCreator.addSearchQuery(searchQuery);
             urlCreator.addTagQuery("contributor");
+            urlCreator.addShowFieldsQuery("thumbnail");
             urlCreator.orderByNewest();
 
             // Get the data and parse
@@ -60,7 +61,7 @@ class URLCreator {
     }
 
     public String createLink() {
-        return GUARDIAN_DOMAIN + searchQuery + getApiKeyParameter() + references + orderBy;
+        return GUARDIAN_DOMAIN + searchQuery + getApiKeyParameter() + references + orderBy + fields;
     }
 
     public void addSearchQuery(String searchQuery) {
@@ -81,7 +82,7 @@ class URLCreator {
     }
 
     public void addShowFieldsQuery(String fields) {
-        this.references = "&show-fields=" + fields;
+        this.fields = "&show-fields=" + fields;
     }
 }
 
@@ -229,7 +230,8 @@ class Parser {
                     currentStory.getString("webTitle"),
                     currentStory.getString("sectionName"),
                     getAuthors(currentStory),
-                    getWebPublicationDate(currentStory)
+                    getWebPublicationDate(currentStory),
+                    getImage(currentStory)
             ));
         }
         return stories;
@@ -275,6 +277,20 @@ class Parser {
         String authorKey = "webTitle";
         if (currentTag.has(typeKey) && currentTag.get(typeKey).equals(typeValue) && currentTag.has(authorKey)) {
             return currentTag.getString(authorKey);
+        }
+        return null;
+    }
+
+    @Nullable
+    private String getImage(JSONObject currentStory) throws JSONException {
+        String fieldKey = "fields";
+        String imageKey = "thumbnail";
+
+        if (currentStory.has(fieldKey)) {
+            JSONObject fieldObject = currentStory.getJSONObject(fieldKey);
+            if (fieldObject.has(imageKey)) {
+                return fieldObject.getString(imageKey);
+            }
         }
         return null;
     }
