@@ -1,5 +1,7 @@
 package com.example.android.newsapp;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -7,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -97,6 +100,9 @@ class Downloader {
         }
     }
 
+    /**
+     *  This method is used to download articles and theirs text contents
+     */
     public String crateRowData() throws ConnectionException{
         HttpURLConnection urlConnection = null;
         InputStream inputStream = null;
@@ -104,11 +110,29 @@ class Downloader {
         try {
             urlConnection = establishUrlConnection();
             inputStream = prepareInputStream(urlConnection);
-            response = readFromStream(inputStream);
+            response = readDataFromStream(inputStream);
         } finally {
             release(urlConnection, inputStream);
         }
         return response;
+    }
+
+    /**
+     *  This method is used to download image for article
+     */
+    public Bitmap downloadImage() throws ConnectionException {
+        HttpURLConnection urlConnection = null;
+        InputStream inputStream = null;
+        Bitmap image;
+        try {
+            urlConnection = establishUrlConnection();
+            inputStream = prepareInputStream(urlConnection);
+            image = getBitmapFromStream(inputStream);
+        } finally {
+            release(urlConnection, inputStream);
+        }
+        return image;
+
     }
 
     private HttpURLConnection establishUrlConnection() throws ConnectionException {
@@ -140,7 +164,7 @@ class Downloader {
         }
     }
 
-    private String readFromStream(InputStream inputStream) throws ConnectionException {
+    private String readDataFromStream(InputStream inputStream) throws ConnectionException {
         StringBuilder output = new StringBuilder();
         try {
             if (inputStream != null) {
@@ -158,6 +182,15 @@ class Downloader {
             throw new ConnectionException(ConnectionException.READ_STREAM);
         }
         return output.toString();
+    }
+
+    private Bitmap getBitmapFromStream(InputStream inputStream) {
+        Bitmap bmp = null;
+        if (inputStream != null) {
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+            bmp = BitmapFactory.decodeStream(bufferedInputStream);
+        }
+        return bmp;
     }
 
     private void release(HttpURLConnection urlConnection, InputStream inputStream)

@@ -1,5 +1,6 @@
 package com.example.android.newsapp;
 
+import android.graphics.Bitmap;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
@@ -66,6 +67,15 @@ public class TestDownloader {
         Downloader downloader = new Downloader("https://content.guardianapis.com/business/2014/feb/18/uk-inflation-falls-below-bank-england-target?api-key=" + key);
         response = downloader.crateRowData();
         assertEquals(expectedResponse, response);
+    }
+
+    @Test
+    public void testBitmapDownload() throws ConnectionException{
+        Downloader downloader = new Downloader("https://media.guim.co.uk/bb1acca7331a74e8dbf9c062d1f69e4b9535cdc2/0_460_4413_2647/500.jpg");
+        Bitmap bitmap = downloader.downloadImage();
+        response = bitmap.toString();
+        assertEquals(500, bitmap.getWidth());
+        assertEquals(300, bitmap.getHeight());
     }
 
 }
