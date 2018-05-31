@@ -92,6 +92,17 @@ class URLCreator {
         query.appendQueryParameter("show-fields", fields);
     }
 
+    public void addShowFieldsQuery(List<String> fields ) {
+        StringBuilder fieldsToShow = new StringBuilder();
+        String prefix = "";
+        for (String field:fields) {
+            fieldsToShow.append(prefix);
+            prefix = ",";
+            fieldsToShow.append(field);
+        }
+        query.appendQueryParameter("show-fields", fieldsToShow.toString());
+    }
+
     /**
      * 	Modify the number of items displayed per page	Integer	1 to 50
      */

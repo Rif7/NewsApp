@@ -6,6 +6,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static org.junit.Assert.*;
 
 public class TestURLCreator {
@@ -34,6 +37,10 @@ public class TestURLCreator {
         verifyDomainAndKey();
     }
 
+    private void createLink() {
+        mLink = mCreator.createLink();
+    }
+
     @Test
     public void testSingleSearch(){
         String toSearch = "debate";
@@ -52,10 +59,6 @@ public class TestURLCreator {
         assertTrue(mLink.contains("q=" + searchResult));
     }
 
-    private void createLink() {
-        mLink = mCreator.createLink();
-    }
-
     @Test
     public void testAll() {
         String toSearch = "debate";
@@ -63,8 +66,9 @@ public class TestURLCreator {
         String tag = "contributor";
         mCreator.addTagQuery(tag);
         mCreator.orderByNewest();
-        String field = "thumbnail";
-        mCreator.addShowFieldsQuery(field);
+        String field1 = "thumbnail";
+        String field2 = "bodyText";
+        mCreator.addShowFieldsQuery(new ArrayList<>(Arrays.asList(field1,field2)));
         int size = 7;
         mCreator.addSizeQuery(size);
 
@@ -72,7 +76,7 @@ public class TestURLCreator {
         assertTrue(mLink.contains("q=" + toSearch));
         assertTrue(mLink.contains("&show-tags=" + tag));
         assertTrue(mLink.contains("&order-by=newest"));
-        assertTrue(mLink.contains("&show-fields=" + field));
+        assertTrue(mLink.contains("&show-fields=" + field1 + "%2C" + field2));
         assertTrue(mLink.contains("&page-size=" + Integer.toString(size)));
     }
 }
