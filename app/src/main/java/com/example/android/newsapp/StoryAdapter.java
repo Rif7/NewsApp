@@ -64,7 +64,7 @@ class StoryAdapter extends ArrayAdapter<Story> {
         }
 
         Bitmap image = story.getImage();
-        ImageView imageView = (ImageView) convertView.findViewById(R.id.story_item_image);
+        ImageView imageView = convertView.findViewById(R.id.story_item_image);
         if(image != null) {
             imageView.setVisibility(View.VISIBLE);
             imageView.setImageBitmap(image);

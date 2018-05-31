@@ -65,10 +65,14 @@ public class TestURLCreator {
         mCreator.orderByNewest();
         String field = "thumbnail";
         mCreator.addShowFieldsQuery(field);
+        int size = 7;
+        mCreator.addSizeQuery(size);
+
         testBaseUrl();
         assertTrue(mLink.contains("q=" + toSearch));
         assertTrue(mLink.contains("&show-tags=" + tag));
         assertTrue(mLink.contains("&order-by=newest"));
         assertTrue(mLink.contains("&show-fields=" + field));
+        assertTrue(mLink.contains("&page-size=" + Integer.toString(size)));
     }
 }

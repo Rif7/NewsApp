@@ -13,7 +13,7 @@ public class QueryUtilsTest {
     public void testValidResponse() {
         List<Story> list = QueryUtils.prepareNews(""); // default query
         assertNotNull(list);
-        assertEquals(10, list.size()); // default response size
+        assertEquals(QueryUtils.DEFAULT_SIZE, list.size()); // default response size
         int i = 0;
         for (Story story: list) {
             i++;
@@ -23,7 +23,7 @@ public class QueryUtilsTest {
 
     @Test
     public void testInvalidResponse() {
-        List<Story> list = QueryUtils.prepareNews("yooouu cannottt fiind meee"); // impossible to find query
+        List<Story> list = QueryUtils.prepareNews("4847500234"); // impossible to find query
         assertNotNull(list);
         assertTrue(list.isEmpty());
     }

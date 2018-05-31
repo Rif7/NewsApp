@@ -24,6 +24,7 @@ import java.util.List;
 
 final class QueryUtils {
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
+    public static final int DEFAULT_SIZE = 8;
 
     public static List<Story> prepareNews(String searchQuery) {
         try {
@@ -32,12 +33,15 @@ final class QueryUtils {
             urlCreator.addTagQuery("contributor");
             urlCreator.addShowFieldsQuery("thumbnail");
             urlCreator.orderByNewest();
+            urlCreator.addSizeQuery(DEFAULT_SIZE);
 
             // Get the data and parse
             Downloader downloader = new Downloader(urlCreator.createLink());
             Parser parser = new Parser(downloader.crateRowData());
             List<Story> stories = parser.createList();
-            stories = downloadImages(stories);
+            if (!stories.isEmpty()) {
+                stories = downloadImages(stories);
+            }
             return stories;
         } catch (JSONException | ConnectionException e ) {
             Log.e(LOG_TAG, e.getMessage(), e);
@@ -87,6 +91,14 @@ class URLCreator {
     public void addShowFieldsQuery(String fields) {
         query.appendQueryParameter("show-fields", fields);
     }
+
+    /**
+     * 	Modify the number of items displayed per page	Integer	1 to 50
+     */
+    public void addSizeQuery(int size){
+        query.appendQueryParameter("page-size", Integer.toString(size));
+    }
+
 }
 
 /**
