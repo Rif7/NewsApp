@@ -1,0 +1,74 @@
+package com.example.android.newsapp;
+
+import android.util.Log;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+
+public class TestURLCreator {
+    private URLCreator mCreator;
+    private String mLink;
+
+    @Before
+    public void createInstance() {
+        mCreator = new URLCreator("");
+    }
+
+    private void verifyDomainAndKey() {
+        assertTrue(mLink.startsWith("https://content.guardianapis.com/search?"));
+        assertTrue(mLink.matches(	"(.*[^?&])[?&]+api-key=edbd5c14-5eed-4f30-ba18-8b621faf2b5b(.*)"));
+    }
+
+    @After
+    public void tearDown() {
+        Log.d("END", mLink);
+        mCreator = null;
+        mLink = null;
+    }
+
+    public void testBaseUrl(){
+        createLink();
+        verifyDomainAndKey();
+    }
+
+    @Test
+    public void testSingleSearch(){
+        String toSearch = "debate";
+        mCreator = new URLCreator(toSearch);
+        testBaseUrl();
+        assertTrue( mLink.contains("q=" + toSearch));
+    }
+
+    @Test
+    public void testSearchWithEmptySpace(){
+        String searchParameter = "debate economy";
+        String searchResult = "debate%20economy";
+
+        mCreator = new URLCreator(searchParameter);
+        testBaseUrl();
+        assertTrue(mLink.contains("q=" + searchResult));
+    }
+
+    private void createLink() {
+        mLink = mCreator.createLink();
+    }
+
+    @Test
+    public void testAll() {
+        String toSearch = "debate";
+        mCreator = new URLCreator(toSearch);
+        String tag = "contributor";
+        mCreator.addTagQuery(tag);
+        mCreator.orderByNewest();
+        String field = "thumbnail";
+        mCreator.addShowFieldsQuery(field);
+        testBaseUrl();
+        assertTrue(mLink.contains("q=" + toSearch));
+        assertTrue(mLink.contains("&show-tags=" + tag));
+        assertTrue(mLink.contains("&order-by=newest"));
+        assertTrue(mLink.contains("&show-fields=" + field));
+    }
+}

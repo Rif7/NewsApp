@@ -35,7 +35,7 @@ public class TestDownloader {
 
     @Test
     public void testNotNullResponse() throws ConnectionException {
-        URLCreator urlCreator = new URLCreator();
+        URLCreator urlCreator = new URLCreator("");
         Downloader downloader = new Downloader(urlCreator.createLink());
         response = downloader.crateRowData();
         assertNotNull(response);

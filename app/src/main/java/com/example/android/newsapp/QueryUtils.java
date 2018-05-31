@@ -2,6 +2,7 @@ package com.example.android.newsapp;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -27,8 +28,7 @@ final class QueryUtils {
     public static List<Story> prepareNews(String searchQuery) {
         try {
             // Create URL to get data
-            URLCreator urlCreator = new URLCreator();
-            urlCreator.addSearchQuery(searchQuery);
+            URLCreator urlCreator = new URLCreator(searchQuery);
             urlCreator.addTagQuery("contributor");
             urlCreator.addShowFieldsQuery("thumbnail");
             urlCreator.orderByNewest();
@@ -61,38 +61,31 @@ class URLCreator {
     private static final String API_KEY = "edbd5c14-5eed-4f30-ba18-8b621faf2b5b";
     private static final String GUARDIAN_DOMAIN = "https://content.guardianapis.com/search?";
 
-    private String searchQuery = "";
-    private String references = "";
-    private String orderBy = "";
-    private String fields = "";
-
-    private String getApiKeyParameter() {
-        return "&api-key=" + API_KEY;
-    }
+    private Uri.Builder query;
 
     public String createLink() {
-        return GUARDIAN_DOMAIN + searchQuery + getApiKeyParameter() + references + orderBy + fields;
+        query.appendQueryParameter("api-key", API_KEY);
+        return query.toString();
     }
 
-    public void addSearchQuery(String searchQuery) {
-        String formattedQuery = searchQuery;
-        if (searchQuery.contains(" ")) {
-            formattedQuery = formattedQuery.replaceAll(" ", "%20");
-            formattedQuery = "\"" + formattedQuery + "\"";
+    URLCreator(String searchQuery) {
+        query = Uri.parse(GUARDIAN_DOMAIN).buildUpon();
+        if (searchQuery.equals("")) {
+            return;
         }
-        this.searchQuery = "q=" + formattedQuery;
+        query.appendQueryParameter("q", searchQuery);
     }
 
     public void orderByNewest() {
-        orderBy = "&order-by=newest";
+        query.appendQueryParameter("order-by", "newest");
     }
 
     public void addTagQuery(String references) {
-        this.references = "&show-tags=" + references;
+        query.appendQueryParameter("show-tags", references);
     }
 
     public void addShowFieldsQuery(String fields) {
-        this.fields = "&show-fields=" + fields;
+        query.appendQueryParameter("show-fields", fields);
     }
 }
 
