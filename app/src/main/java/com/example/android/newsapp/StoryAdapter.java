@@ -2,11 +2,13 @@ package com.example.android.newsapp;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -59,6 +61,13 @@ class StoryAdapter extends ArrayAdapter<Story> {
             authorsView.setText(Arrays.toString(authors.toArray()).replaceAll("[\\[\\]]", ""));
         } else {
             authorsView.setVisibility(View.GONE);
+        }
+
+        Bitmap image = story.getImage();
+        ImageView imageView = (ImageView) convertView.findViewById(R.id.story_item_image);
+        if(image != null) {
+            imageView.setVisibility(View.VISIBLE);
+            imageView.setImageBitmap(image);
         }
 
         return convertView;

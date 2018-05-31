@@ -29,7 +29,7 @@ public class TestParser {
             assertEquals(expected.get(i).getWebUrl(), actual.get(i).getWebUrl());
             assertEquals(expected.get(i).getWebTitle(), actual.get(i).getWebTitle());
             assertEquals(expected.get(i).getWebPublicationDate().toString(), actual.get(i).getWebPublicationDate().toString());
-            assertEquals(expected.get(i).getImgaeUrl(), actual.get(i).getImgaeUrl());
+            assertEquals(expected.get(i).getImageUrl(), actual.get(i).getImageUrl());
         }
     }
 

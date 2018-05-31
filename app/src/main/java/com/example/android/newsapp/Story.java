@@ -1,5 +1,7 @@
 package com.example.android.newsapp;
 
+import android.graphics.Bitmap;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,7 +20,8 @@ class Story {
     private ArrayList<String> authors;
     private Date webPublicationDate;    // webPublicationDate is received as ISO_INSTANT format
                                         // "2018-02-21T16:50:39Z"
-    private String imgaeUrl;
+    private String imageUrl;
+    Bitmap image;
 
     public Story(String webUrl, String webTitle, String sectionName, ArrayList<String> authors,
                  String webPublicationDate, String imageUrl) {
@@ -35,7 +38,7 @@ class Story {
         } else {
             this.webPublicationDate = null;
         }
-        this.imgaeUrl = imageUrl;
+        this.imageUrl = imageUrl;
     }
 
     private Date setWebPublicationDate(String webPublicationDateAsINSTANT) {
@@ -68,7 +71,15 @@ class Story {
         return webPublicationDate;
     }
 
-    public String getImgaeUrl() { return imgaeUrl; }
+    public String getImageUrl() { return imageUrl; }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
+    }
+
+    public Bitmap getImage() {
+        return image;
+    }
 
     @Override
     public String toString() {
@@ -94,8 +105,16 @@ class Story {
         s.append("\n");
 
         s.append("imageUrl = ");
-        if (imgaeUrl != null) {
-            s.append(imgaeUrl);
+        if (imageUrl != null) {
+            s.append(imageUrl);
+        } else {
+            s.append(UNKNOWN);
+        }
+        s.append("\n");
+
+        s.append("image = ");
+        if (image != null) {
+            s.append(image.getWidth()).append("x").append(image.getHeight());
         } else {
             s.append(UNKNOWN);
         }

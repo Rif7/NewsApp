@@ -36,11 +36,21 @@ final class QueryUtils {
             // Get the data and parse
             Downloader downloader = new Downloader(urlCreator.createLink());
             Parser parser = new Parser(downloader.crateRowData());
-            return parser.createList();
+            List<Story> stories = parser.createList();
+            stories = downloadImages(stories);
+            return stories;
         } catch (JSONException | ConnectionException e ) {
             Log.e(LOG_TAG, e.getMessage(), e);
         }
         return null;
+    }
+
+    private static List<Story> downloadImages(List<Story> stories) throws ConnectionException{
+        for (Story story: stories) {
+            Downloader downloader = new Downloader(story.getImageUrl());
+            story.setImage(downloader.downloadImage());
+        }
+        return stories;
     }
 }
 
