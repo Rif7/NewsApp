@@ -70,6 +70,16 @@ class StoryAdapter extends ArrayAdapter<Story> {
             imageView.setImageBitmap(image);
         }
 
+        TextView bodyTextView = convertView.findViewById(R.id.story_item_body_text);
+        String bodyText = story.getBodyText();
+        if (bodyText != null) {
+            bodyText = trimBodyText(bodyText);
+            bodyTextView.setVisibility(View.VISIBLE);
+            bodyTextView.setText(bodyText);
+        } else {
+            bodyTextView.setVisibility(View.GONE);
+        }
+
         return convertView;
     }
 
@@ -82,6 +92,15 @@ class StoryAdapter extends ArrayAdapter<Story> {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy");
         return timeFormat.format(dateObject);
     }
+
+    private String trimBodyText(String bodyText) {
+        int trimTextLength = 400;
+        if (bodyText.length() > trimTextLength) {
+            bodyText = bodyText.substring(0, trimTextLength) + "...";
+        }
+        return bodyText;
+    }
+
     @Override
     public void clear() {
         super.clear();

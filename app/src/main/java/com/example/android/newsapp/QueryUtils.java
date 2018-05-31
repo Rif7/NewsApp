@@ -31,7 +31,10 @@ final class QueryUtils {
             // Create URL to get data
             URLCreator urlCreator = new URLCreator(searchQuery);
             urlCreator.addTagQuery("contributor");
-            urlCreator.addShowFieldsQuery("thumbnail");
+            ArrayList<String> list = new ArrayList<>();
+            list.add("thumbnail");
+            list.add("bodyText");
+            urlCreator.addShowFieldsQuery(list);
             urlCreator.orderByNewest();
             urlCreator.addSizeQuery(DEFAULT_SIZE);
 
@@ -49,10 +52,17 @@ final class QueryUtils {
         return null;
     }
 
-    private static List<Story> downloadImages(List<Story> stories) throws ConnectionException{
+    private static List<Story> downloadImages(List<Story> stories){
         for (Story story: stories) {
-            Downloader downloader = new Downloader(story.getImageUrl());
-            story.setImage(downloader.downloadImage());
+            try {
+                String imageUrl = story.getImageUrl();
+                if (imageUrl != null) {
+                    Downloader downloader = new Downloader(imageUrl);
+                    story.setImage(downloader.downloadImage());
+                }
+            } catch (ConnectionException e) {
+                e.printStackTrace();
+            }
         }
         return stories;
     }
@@ -257,7 +267,8 @@ class Parser {
                     currentStory.getString("sectionName"),
                     getAuthors(currentStory),
                     getWebPublicationDate(currentStory),
-                    getImage(currentStory)
+                    getField(currentStory,"thumbnail"),
+                    getField(currentStory,"bodyText")
             ));
         }
         return stories;
@@ -308,14 +319,13 @@ class Parser {
     }
 
     @Nullable
-    private String getImage(JSONObject currentStory) throws JSONException {
+    private String getField(JSONObject currentStory, String key) throws JSONException {
         String fieldKey = "fields";
-        String imageKey = "thumbnail";
 
         if (currentStory.has(fieldKey)) {
             JSONObject fieldObject = currentStory.getJSONObject(fieldKey);
-            if (fieldObject.has(imageKey)) {
-                return fieldObject.getString(imageKey);
+            if (fieldObject.has(key)) {
+                return fieldObject.getString(key);
             }
         }
         return null;

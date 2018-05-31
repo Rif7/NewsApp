@@ -22,9 +22,10 @@ class Story {
                                         // "2018-02-21T16:50:39Z"
     private String imageUrl;
     Bitmap image;
+    private String bodyText;
 
     public Story(String webUrl, String webTitle, String sectionName, ArrayList<String> authors,
-                 String webPublicationDate, String imageUrl) {
+                 String webPublicationDate, String imageUrl, String bodyText) {
         this.webUrl = webUrl;
         // delete everything  after '|' from title
         if (webTitle.contains("|")) {
@@ -39,6 +40,7 @@ class Story {
             this.webPublicationDate = null;
         }
         this.imageUrl = imageUrl;
+        this.bodyText = bodyText;
     }
 
     private Date setWebPublicationDate(String webPublicationDateAsINSTANT) {
@@ -81,6 +83,10 @@ class Story {
         return image;
     }
 
+    public String getBodyText() {
+        return bodyText;
+    }
+
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
@@ -115,6 +121,14 @@ class Story {
         s.append("image = ");
         if (image != null) {
             s.append(image.getWidth()).append("x").append(image.getHeight());
+        } else {
+            s.append(UNKNOWN);
+        }
+        s.append("\n");
+
+        s.append("bodyText = ");
+        if (bodyText != null) {
+            s.append(bodyText);
         } else {
             s.append(UNKNOWN);
         }
