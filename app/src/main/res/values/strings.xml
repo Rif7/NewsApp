@@ -10,4 +10,43 @@
     <!-- Settings -->
     <string name="settings_menu_item">Settings</string>
     <string name="settings_title">News Settings</string>
+
+    <!-- Strings For Show image Preference -->
+    <string name="settings_show_images_title">Show Images</string>
+
+    <!-- Strings For Order-By Preference -->
+    <string name="settings_order_by_label">Order By</string>
+    <string name="settings_order_by_key">order_by</string>
+    <string name="settings_order_by_default">@string/settings_order_by_most_recent_value</string>
+
+    <string name="settings_order_by_most_recent_label">Most Relevant</string>
+    <string name="settings_order_by_most_recent_value">relevance</string>
+
+    <string name="settings_order_by_most_relevant_label">Most Recent</string>
+    <string name="settings_order_by_most_relevant_value">newest</string>
+
+    <!-- Strings For Show Body Preference -->
+    <string name="settings_show_body_label">Show article content</string>
+    <string name="settings_show_body_key">show_body</string>
+    <string name="settings_show_body_default">@string/settings_show_body_introduction_value</string>
+
+    <string name="settings_show_body_None_label">None</string>
+    <string name="settings_show_body_None_value">0</string>
+
+    <string name="settings_show_body_introduction_label">Only introduction</string>
+    <string name="settings_show_body_introduction_value">400</string>
+
+    <string name="settings_show_body_all_label">Show all</string>
+    <string name="settings_show_body_all_value">-1</string>
+
+    <!-- Strings For page size Preference -->
+    <string name="settings_page_size_label">Show number of articles</string>
+    <string name="settings_page_size_key">page_size</string>
+    <string name="settings_page_size_default">@string/settings_page_size_10_value_label</string>
+
+    <string name="settings_page_size_5_value_label">5</string>
+    <string name="settings_page_size_10_value_label">10</string>
+    <string name="settings_page_size_20_value_label">20</string>
+    <string name="settings_page_size_40_value_label">40</string>
+
 </resources>

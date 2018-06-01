@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="settings_order_by_labels">
+        <item>@string/settings_order_by_most_recent_label</item>
+        <item>@string/settings_order_by_most_relevant_label</item>
+    </string-array>
+
+    <string-array name="settings_order_by_values">
+        <item>@string/settings_order_by_most_recent_value</item>
+        <item>@string/settings_order_by_most_relevant_value</item>
+    </string-array>
+
+    <string-array name="settings_show_body_labels">
+        <item>@string/settings_show_body_None_label</item>
+        <item>@string/settings_show_body_introduction_label</item>
+        <item>@string/settings_show_body_all_label</item>
+    </string-array>
+
+    <string-array name="settings_show_body_values">
+        <item>@string/settings_show_body_None_value</item>
+        <item>@string/settings_show_body_introduction_value</item>
+        <item>@string/settings_show_body_all_value</item>
+    </string-array>
+
+    <string-array name="settings_page_size_labels_values">
+        <item>@string/settings_page_size_5_value_label</item>
+        <item>@string/settings_page_size_10_value_label</item>
+        <item>@string/settings_page_size_20_value_label</item>
+        <item>@string/settings_page_size_40_value_label</item>
+    </string-array>
+</resources>
