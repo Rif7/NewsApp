@@ -39,21 +39,13 @@ final class QueryUtils {
             SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 
             // add to query fields
-            ArrayList<String> list = new ArrayList<>();
-            boolean showImages = sharedPrefs.getBoolean(context.getString(R.string.settings_show_images_key), true);
-            if (showImages) {
-                list.add("thumbnail");
-            }
-            list.add("bodyText");
-            if (!list.isEmpty()) {
-                urlCreator.addShowFieldsQuery(list);
-            }
+            addQueryFields(context, urlCreator, sharedPrefs);
 
-            // change default order
-            urlCreator.orderByNewest();
+            // add order type
+            addOrder(context, urlCreator, sharedPrefs);
 
             // add number of stories to query
-            urlCreator.addSizeQuery(DEFAULT_SIZE);
+            addPageSizeQuery(context, urlCreator, sharedPrefs);
 
             // Get the data and parse
             Downloader downloader = new Downloader(urlCreator.createLink());
@@ -67,6 +59,38 @@ final class QueryUtils {
             Log.e(LOG_TAG, e.getMessage(), e);
         }
         return null;
+    }
+
+    private static void addOrder(Context context, URLCreator urlCreator, SharedPreferences sharedPrefs) {
+        String orderByType = sharedPrefs.getString(
+                context.getString(R.string.settings_order_by_key),
+                context.getString(R.string.settings_order_by_default));
+        urlCreator.orderBy(orderByType);
+    }
+
+    private static void addPageSizeQuery(Context context, URLCreator urlCreator, SharedPreferences sharedPrefs) {
+        int pageSize = Integer.parseInt(sharedPrefs.getString(
+                context.getString(R.string.settings_page_size_key),
+                context.getString(R.string.settings_page_size_default)));
+        urlCreator.addSizeQuery(pageSize);
+    }
+
+    private static void addQueryFields(Context context, URLCreator urlCreator, SharedPreferences sharedPrefs) {
+        ArrayList<String> list = new ArrayList<>();
+        boolean showImages = sharedPrefs.getBoolean(context.getString(R.string.settings_show_images_key), true);
+        if (showImages) {
+            list.add("thumbnail");
+        }
+
+        int bodyTextLength = Integer.parseInt(sharedPrefs.getString(
+                context.getString(R.string.settings_show_body_key),
+                context.getString(R.string.settings_show_body_default)));
+        if (bodyTextLength != Integer.parseInt(context.getString(R.string.settings_show_body_None_value))) {
+            list.add("bodyText");
+        }
+        if (!list.isEmpty()) {
+            urlCreator.addShowFieldsQuery(list);
+        }
     }
 
     private static List<Story> downloadImages(List<Story> stories){
@@ -107,8 +131,8 @@ class URLCreator {
         query.appendQueryParameter("q", searchQuery);
     }
 
-    public void orderByNewest() {
-        query.appendQueryParameter("order-by", "newest");
+    public void orderBy(String orderType) {
+        query.appendQueryParameter("order-by", orderType);
     }
 
     public void addTagQuery(String references) {

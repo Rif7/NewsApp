@@ -2,7 +2,9 @@ package com.example.android.newsapp;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,9 +96,15 @@ class StoryAdapter extends ArrayAdapter<Story> {
     }
 
     private String trimBodyText(String bodyText) {
-        int trimTextLength = 400;
-        if (bodyText.length() > trimTextLength) {
-            bodyText = bodyText.substring(0, trimTextLength) + "...";
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        int bodyTextLength = Integer.parseInt(sharedPrefs.getString(
+                getContext().getString(R.string.settings_show_body_key),
+                getContext().getString(R.string.settings_show_body_default)));
+
+        if (bodyTextLength < bodyText.length() && bodyTextLength !=
+                Integer.parseInt(getContext().getString(R.string.settings_show_body_all_value))) {
+            bodyText = bodyText.substring(0, bodyTextLength) + "...";
         }
         return bodyText;
     }

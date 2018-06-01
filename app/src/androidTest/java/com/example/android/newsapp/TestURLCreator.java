@@ -22,7 +22,7 @@ public class TestURLCreator {
 
     private void verifyDomainAndKey() {
         assertTrue(mLink.startsWith("https://content.guardianapis.com/search?"));
-        assertTrue(mLink.matches(	"(.*[^?&])[?&]+api-key=edbd5c14-5eed-4f30-ba18-8b621faf2b5b(.*)"));
+        assertTrue(mLink.matches("(.*[^?&])[?&]+api-key=edbd5c14-5eed-4f30-ba18-8b621faf2b5b(.*)"));
     }
 
     @After
@@ -65,7 +65,7 @@ public class TestURLCreator {
         mCreator = new URLCreator(toSearch);
         String tag = "contributor";
         mCreator.addTagQuery(tag);
-        mCreator.orderByNewest();
+        mCreator.orderBy("newest");
         String field1 = "thumbnail";
         String field2 = "bodyText";
         mCreator.addShowFieldsQuery(new ArrayList<>(Arrays.asList(field1,field2)));
