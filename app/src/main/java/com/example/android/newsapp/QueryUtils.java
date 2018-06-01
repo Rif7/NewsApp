@@ -1,8 +1,11 @@
 package com.example.android.newsapp;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -26,16 +29,30 @@ final class QueryUtils {
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
     public static final int DEFAULT_SIZE = 8;
 
-    public static List<Story> prepareNews(String searchQuery) {
+    public static List<Story> prepareNews(String searchQuery, Context context) {
         try {
             // Create URL to get data
             URLCreator urlCreator = new URLCreator(searchQuery);
             urlCreator.addTagQuery("contributor");
+
+            // get preferences
+            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+            // add to query fields
             ArrayList<String> list = new ArrayList<>();
-            list.add("thumbnail");
+            boolean showImages = sharedPrefs.getBoolean(context.getString(R.string.settings_show_images_key), true);
+            if (showImages) {
+                list.add("thumbnail");
+            }
             list.add("bodyText");
-            urlCreator.addShowFieldsQuery(list);
+            if (!list.isEmpty()) {
+                urlCreator.addShowFieldsQuery(list);
+            }
+
+            // change default order
             urlCreator.orderByNewest();
+
+            // add number of stories to query
             urlCreator.addSizeQuery(DEFAULT_SIZE);
 
             // Get the data and parse

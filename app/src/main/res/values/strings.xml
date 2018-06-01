@@ -13,6 +13,7 @@
 
     <!-- Strings For Show image Preference -->
     <string name="settings_show_images_title">Show Images</string>
+    <string name="settings_show_images_key">show_images</string>
 
     <!-- Strings For Order-By Preference -->
     <string name="settings_order_by_label">Order By</string>

@@ -20,6 +20,6 @@ class StoryLoader extends AsyncTaskLoader<List<Story>> {
 
     @Override
     public List<Story> loadInBackground() {
-        return QueryUtils.prepareNews(searchQuery);
+        return QueryUtils.prepareNews(searchQuery, getContext());
     }
 }

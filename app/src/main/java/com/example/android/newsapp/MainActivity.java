@@ -4,9 +4,11 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,12 +25,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements LoaderManager.LoaderCallbacks<List<Story>> {
+        implements LoaderManager.LoaderCallbacks<List<Story>>,
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     private String searchQuery;
     private StoryAdapter storyAdapter;
     private TextView emptyListViewMessage;
     private ProgressBar loadingIndicator;
+
+    private final int STORY_LOADER_ID = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,10 @@ public class MainActivity extends AppCompatActivity
         ListView storyListView = findViewById(R.id.main_list);
         storyAdapter = new StoryAdapter(this, new ArrayList<Story>());
         storyListView.setAdapter(storyAdapter);
+
+        // Obtain a reference to the SharedPreferences file for this app register preference changes
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs.registerOnSharedPreferenceChangeListener(this);
 
         // Set View for no elements in list
         emptyListViewMessage = findViewById(R.id.main_empty_view);
@@ -88,7 +97,6 @@ public class MainActivity extends AppCompatActivity
         if (networkInfo != null && networkInfo.isConnected()) {
             // Initialize loader to fetch data
             LoaderManager loaderManager = getLoaderManager();
-            final int STORY_LOADER_ID = 1;
             if (!isRestart) {
                 loaderManager.initLoader(STORY_LOADER_ID, null, this);
             } else {
@@ -145,5 +153,23 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onLoaderReset(Loader<List<Story>> loader) {
         storyAdapter.clear();
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+        if (key.equals(getString(R.string.settings_show_images_key)) ||
+                key.equals(getString(R.string.settings_page_size_key)) ||
+                key.equals(getString(R.string.settings_show_body_key)) ||
+                key.equals(getString(R.string.settings_order_by_key))) {
+
+            storyAdapter.clear();
+
+            emptyListViewMessage.setVisibility(View.GONE);
+
+            View loadingIndicator = findViewById(R.id.main_loading_indicator);
+            loadingIndicator.setVisibility(View.VISIBLE);
+
+            getLoaderManager().restartLoader(STORY_LOADER_ID, null, this);
+        }
     }
 }

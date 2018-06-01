@@ -1,17 +1,27 @@
 package com.example.android.newsapp;
 
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
 import android.util.Log;
 
+import org.junit.Before;
 import org.junit.Test;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class QueryUtilsTest {
+    Context appContext;
+
+    @Before
+    public void setContext() {
+        appContext = InstrumentationRegistry.getTargetContext();
+
+    }
 
     @Test
     public void testValidResponse() {
-        List<Story> list = QueryUtils.prepareNews(""); // default query
+        List<Story> list = QueryUtils.prepareNews("", appContext); // default query
         assertNotNull(list);
         assertEquals(QueryUtils.DEFAULT_SIZE, list.size()); // default response size
         int i = 0;
@@ -23,7 +33,7 @@ public class QueryUtilsTest {
 
     @Test
     public void testInvalidResponse() {
-        List<Story> list = QueryUtils.prepareNews("4847500234"); // impossible to find query
+        List<Story> list = QueryUtils.prepareNews("4847500234", appContext); // impossible to find query
         assertNotNull(list);
         assertTrue(list.isEmpty());
     }

@@ -5,7 +5,7 @@
 
     <CheckBoxPreference
         android:defaultValue="true"
-        android:key="preference_show_images"
+        android:key="@string/settings_show_images_key"
         android:title="@string/settings_show_images_title" />
 
     <ListPreference
@@ -28,6 +28,5 @@
         android:entryValues="@array/settings_page_size_labels_values"
         android:key="@string/settings_page_size_key"
         android:title="@string/settings_page_size_label" />
-
 
 </PreferenceScreen>
