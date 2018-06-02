@@ -1,10 +1,14 @@
 <resources>
     <string name="app_name">NewsApp</string>
+
+    <!-- Strings For Main Activity -->
     <string name="no_articles_with">No articles with</string>
     <string name="no_internet_connection">No internet connection</string>
     <string name="error_info">Problem with connection. Try again</string>
     <string name="initial_search">news</string>
     <string name="lost_internet_connection">Lost internet connection</string>
+
+    <!-- Article image content description -->
     <string name="photo_of_the_article">photo of the article</string>
 
     <!-- Settings -->
@@ -15,7 +19,7 @@
     <string name="settings_show_images_title">Show Images</string>
     <string name="settings_show_images_key">show_images</string>
 
-    <!-- Strings For Order-By Preference -->
+
     <string name="settings_order_by_label">Order By</string>
     <string name="settings_order_by_key">order_by</string>
     <string name="settings_order_by_default">@string/settings_order_by_most_recent_value</string>
@@ -49,5 +53,67 @@
     <string name="settings_page_size_10_value_label">10</string>
     <string name="settings_page_size_20_value_label">20</string>
     <string name="settings_page_size_40_value_label">40</string>
+
+    <!-- Strings For query parameters -->
+    <string name="guardian_domain">https://content.guardianapis.com/search?</string>
+
+    <string name="api_param">api-key</string>
+    <string name="api_key">edbd5c14-5eed-4f30-ba18-8b621faf2b5b</string>
+
+    <string name="search_param">q</string>
+
+    <string name="show_tags_param">show-tags</string>
+    <string name="contributor">contributor</string>
+
+    <string name="show_fields_param">show-fields</string>
+    <string name="separator">,</string>
+    <string name="thumbnail">thumbnail</string>
+    <string name="bodyText">bodyText</string>
+
+    <string name="order_by_param">order-by</string>
+
+    <string name="page_size_param">page-size</string>
+
+    <!-- Parsing Fields-->
+    <string name="parse_response">response</string>
+    <string name="parse_results">results</string>
+
+    <string name="parse_tags">tags</string>
+    <string name="parse_type">type</string>
+    <string name="parse_contributor">contributor</string>
+    <string name="parse_contributor_name">webTitle</string>
+
+    <string name="parse_fields">fields</string>
+    <string name="parse_thumbnail">@string/thumbnail</string>
+    <string name="parse_bodyText">@string/bodyText</string>
+
+    <string name="parse_webPublicationDate">webPublicationDate</string>
+
+    <string name="parse_webUrl">webUrl</string>
+    <string name="parse_webTitle">webTitle</string>
+    <string name="parse_sectionName">sectionName</string>
+
+    <!-- Story members to String names  -->
+    <string name="story_webUrl">Link</string>
+    <string name="story_webTitle">Title</string>
+    <string name="story_sectionName">Section Name</string>
+    <string name="story_authors">Authors</string>
+    <string name="story_webPublicationDate">Date</string>
+    <string name="story_imageUrl">Image link</string>
+    <string name="story_image">Image resolution</string>
+    <string name="story_bodyText">Article Text</string>
+
+    <string name="story_unknown">UNKNOWN</string>
+    <string name="story_separator">=</string>
+    <string name="story_image_res_separator">x</string>
+
+    <!-- ConnectionException messages  -->
+    <string name="connection_exception_URL">Problem building the URL.</string>
+    <string name="connection_exception_HTML_CODE">Wrong Html response code: </string>
+    <string name="connection_exception_URL_CONNECTION">Problem with establishing Url Connection.</string>
+    <string name="connection_exception_PREPARE_STREAM">Problem with preparing the stream.</string>
+    <string name="connection_exception_READ_STREAM">Problem with reading from stream.</string>
+    <string name="connection_exception_CLOSE_STREAM">Problem with closing the stream.</string>
+    
 
 </resources>

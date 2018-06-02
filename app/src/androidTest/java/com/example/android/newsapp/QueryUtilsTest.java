@@ -11,7 +11,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class QueryUtilsTest {
-    Context appContext;
+    private Context appContext;
 
     @Before
     public void setContext() {
@@ -23,7 +23,6 @@ public class QueryUtilsTest {
     public void testValidResponse() {
         List<Story> list = QueryUtils.prepareNews("", appContext); // default query
         assertNotNull(list);
-        assertEquals(QueryUtils.DEFAULT_SIZE, list.size()); // default response size
         int i = 0;
         for (Story story: list) {
             i++;

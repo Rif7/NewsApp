@@ -1,5 +1,7 @@
 package com.example.android.newsapp;
 
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
@@ -15,9 +17,16 @@ import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
 public class TestParser {
+    private Context appContext;
+
     @Before
     public void preconditions() {
         Log.d("START TEST", "START TEST");
+    }
+
+    @Before
+    public void setContext() {
+        appContext = InstrumentationRegistry.getTargetContext();
     }
 
 
@@ -39,7 +48,8 @@ public class TestParser {
     public void parseTypicalJson() throws JSONException {
         String json = "{\"response\":{\"status\":\"ok\",\"userTier\":\"developer\",\"total\":5,\"startIndex\":1,\"pageSize\":1,\"currentPage\":1,\"pages\":5,\"orderBy\":\"relevance\",\"results\":[{\"id\":\"politics/2018/may/10/tories-accused-of-subverting-democracy-by-not-tabling-brexit-debates\",\"type\":\"article\",\"sectionId\":\"politics\",\"sectionName\":\"Politics\",\"webPublicationDate\":\"2018-05-10T16:09:05Z\",\"webTitle\":\"Tories accused of 'subverting democracy' by not tabling Brexit debates\",\"webUrl\":\"https://www.theguardian.com/politics/2018/may/10/tories-accused-of-subverting-democracy-by-not-tabling-brexit-debates\",\"apiUrl\":\"https://content.guardianapis.com/politics/2018/may/10/tories-accused-of-subverting-democracy-by-not-tabling-brexit-debates\",\"fields\":{\"thumbnail\":\"https://media.guim.co.uk/4c7d2b9efcdda9c4f5471267b2bd89db7ea288c4/24_0_3451_2070/500.jpg\",\"bodyText\":\"BODY TEXT\"},\"tags\":[{\"id\":\"profile/peterwalker\",\"type\":\"contributor\",\"webTitle\":\"Peter Walker\",\"webUrl\":\"https://www.theguardian.com/profile/peterwalker\",\"apiUrl\":\"https://content.guardianapis.com/profile/peterwalker\",\"references\":[],\"bio\":\"<p>Peter Walker is a political correspondent for the Guardian and author of Bike Nation: How Cycling Can Save the World</p>\",\"bylineImageUrl\":\"https://static.guim.co.uk/sys-images/Guardian/Pix/contributor/2007/09/28/peter_walker_140x140.jpg\",\"firstName\":\"walker\",\"lastName\":\"\",\"twitterHandle\":\"peterwalker99\"},{\"id\":\"profile/jessica-elgot\",\"type\":\"contributor\",\"webTitle\":\"Jessica Elgot\",\"webUrl\":\"https://www.theguardian.com/profile/jessica-elgot\",\"apiUrl\":\"https://content.guardianapis.com/profile/jessica-elgot\",\"references\":[],\"bio\":\"<p>Jessica Elgot is a Guardian political correspondent. Twitter:&nbsp;<a href=\\\"https://twitter.com/jessicaelgot\\\">@jessicaelgot</a></p>\",\"bylineImageUrl\":\"https://static.guim.co.uk/sys-images/Guardian/Pix/contributor/2015/6/26/1435313697913/Jessica-Elgot.jpg\",\"bylineLargeImageUrl\":\"https://uploads.guim.co.uk/2017/10/06/Jessica-Elgot,-R.png\",\"firstName\":\"Jessica\",\"lastName\":\"Elgot\",\"twitterHandle\":\"jessicaelgot\"}],\"isHosted\":false,\"pillarId\":\"pillar/news\",\"pillarName\":\"News\"}]}}";
         ArrayList<Story> expected = new ArrayList<>();
-        expected.add(new Story("https://www.theguardian.com/politics/2018/may/10/tories-accused-of-subverting-democracy-by-not-tabling-brexit-debates",
+        expected.add(new Story(appContext,
+                "https://www.theguardian.com/politics/2018/may/10/tories-accused-of-subverting-democracy-by-not-tabling-brexit-debates",
                 "Tories accused of 'subverting democracy' by not tabling Brexit debates",
                 "Politics",
                 new ArrayList<>(Arrays.asList("Peter Walker", "Jessica Elgot")),
@@ -47,7 +57,7 @@ public class TestParser {
                 "https://media.guim.co.uk/4c7d2b9efcdda9c4f5471267b2bd89db7ea288c4/24_0_3451_2070/500.jpg",
                 "BODY TEXT"));
 
-        Parser parser = new Parser(json);
+        Parser parser = new Parser(json, appContext);
         ArrayList<Story> actual = (ArrayList<Story>) parser.createList();
         assertEqualsNews(expected, actual);
     }

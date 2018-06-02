@@ -1,5 +1,7 @@
 package com.example.android.newsapp;
 
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
 import android.util.Log;
 
 import org.junit.After;
@@ -14,10 +16,12 @@ import static org.junit.Assert.*;
 public class TestURLCreator {
     private URLCreator mCreator;
     private String mLink;
+    private Context appContext;
 
     @Before
-    public void createInstance() {
-        mCreator = new URLCreator("");
+    public void createInstanceAndGetContext() {
+        appContext = InstrumentationRegistry.getTargetContext();
+        mCreator = new URLCreator("", appContext);
     }
 
     private void verifyDomainAndKey() {
@@ -44,7 +48,7 @@ public class TestURLCreator {
     @Test
     public void testSingleSearch(){
         String toSearch = "debate";
-        mCreator = new URLCreator(toSearch);
+        mCreator = new URLCreator(toSearch, appContext);
         testBaseUrl();
         assertTrue( mLink.contains("q=" + toSearch));
     }
@@ -54,7 +58,7 @@ public class TestURLCreator {
         String searchParameter = "debate economy";
         String searchResult = "debate%20economy";
 
-        mCreator = new URLCreator(searchParameter);
+        mCreator = new URLCreator(searchParameter, appContext);
         testBaseUrl();
         assertTrue(mLink.contains("q=" + searchResult));
     }
@@ -62,7 +66,7 @@ public class TestURLCreator {
     @Test
     public void testAll() {
         String toSearch = "debate";
-        mCreator = new URLCreator(toSearch);
+        mCreator = new URLCreator(toSearch, appContext);
         String tag = "contributor";
         mCreator.addTagQuery(tag);
         mCreator.orderBy("newest");

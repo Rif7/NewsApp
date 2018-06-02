@@ -1,5 +1,6 @@
 package com.example.android.newsapp;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 
 import java.text.ParseException;
@@ -10,7 +11,7 @@ import java.util.Date;
 import java.util.Locale;
 
 class Story {
-    private static final String UNKNOWN = "UNKNOWN";
+    private Context context;
 
     private String webUrl;
     private String webTitle;
@@ -24,8 +25,9 @@ class Story {
     Bitmap image;
     private String bodyText;
 
-    public Story(String webUrl, String webTitle, String sectionName, ArrayList<String> authors,
-                 String webPublicationDate, String imageUrl, String bodyText) {
+    Story(Context context, String webUrl, String webTitle, String sectionName,
+          ArrayList<String> authors, String webPublicationDate, String imageUrl, String bodyText) {
+        this.context = context;
         this.webUrl = webUrl;
         // delete everything  after '|' from title
         if (webTitle.contains("|")) {
@@ -87,52 +89,59 @@ class Story {
         return bodyText;
     }
 
+
     @Override
     public String toString() {
-        StringBuilder s = new StringBuilder();
-        s.append("webUrl = ").append(webUrl).append("\n");
-        s.append("webTitle = ").append(webTitle).append("\n");
-        s.append("sectionName = ").append(sectionName).append("\n");
+        final String UNKNOWN = context.getString(R.string.story_unknown);
+        final String SEP = context.getString(R.string.story_separator);
+        final String IMAGE_SEPARATOR = context.getString(R.string.story_image_res_separator);
+        final String NL = System.getProperty("line.separator");
 
-        s.append("authors = ");
+
+        StringBuilder s = new StringBuilder();
+        s.append(context.getString(R.string.story_webUrl)).append(SEP).append(webUrl).append(NL);
+        s.append(context.getString(R.string.story_webTitle)).append(SEP).append(webTitle).append(NL);
+        s.append(context.getString(R.string.story_sectionName)).append(SEP).append(sectionName).append(NL);
+
+        s.append(context.getString(R.string.story_authors)).append(SEP);
         if (authors != null) {
             s.append(Arrays.toString(authors.toArray()));
         } else {
             s.append(UNKNOWN);
         }
-        s.append("\n");
+        s.append(NL);
 
-        s.append("webPublicationDate = ");
+        s.append(context.getString(R.string.story_webPublicationDate)).append(SEP);
         if (webPublicationDate != null) {
             s.append(webPublicationDate.toString());
         } else {
             s.append(UNKNOWN);
         }
-        s.append("\n");
+        s.append(NL);
 
-        s.append("imageUrl = ");
+        s.append(context.getString(R.string.story_imageUrl)).append(SEP);
         if (imageUrl != null) {
             s.append(imageUrl);
         } else {
             s.append(UNKNOWN);
         }
-        s.append("\n");
+        s.append(NL);
 
-        s.append("image = ");
+        s.append(context.getString(R.string.story_image)).append(SEP);
         if (image != null) {
-            s.append(image.getWidth()).append("x").append(image.getHeight());
+            s.append(image.getWidth()).append(IMAGE_SEPARATOR).append(image.getHeight());
         } else {
             s.append(UNKNOWN);
         }
-        s.append("\n");
+        s.append(NL);
 
-        s.append("bodyText = ");
+        s.append(context.getString(R.string.story_bodyText)).append(SEP);
         if (bodyText != null) {
             s.append(bodyText);
         } else {
             s.append(UNKNOWN);
         }
-        s.append("\n");
+        s.append(NL);
 
         return s.toString();
     }

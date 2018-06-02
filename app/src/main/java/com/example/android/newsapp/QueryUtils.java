@@ -27,13 +27,16 @@ import java.util.List;
 
 final class QueryUtils {
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
-    public static final int DEFAULT_SIZE = 8;
 
     public static List<Story> prepareNews(String searchQuery, Context context) {
+        if (ConnectionException.URL_CONNECTION == null) {
+            ConnectionException.initializeMessages(context);
+        }
+
         try {
             // Create URL to get data
-            URLCreator urlCreator = new URLCreator(searchQuery);
-            urlCreator.addTagQuery("contributor");
+            URLCreator urlCreator = new URLCreator(searchQuery, context);
+            urlCreator.addTagQuery(context.getString(R.string.contributor));
 
             // get preferences
             SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -49,7 +52,7 @@ final class QueryUtils {
 
             // Get the data and parse
             Downloader downloader = new Downloader(urlCreator.createLink());
-            Parser parser = new Parser(downloader.crateRowData());
+            Parser parser = new Parser(downloader.crateRowData(), context);
             List<Story> stories = parser.createList();
             if (!stories.isEmpty()) {
                 stories = downloadImages(stories);
@@ -79,14 +82,14 @@ final class QueryUtils {
         ArrayList<String> list = new ArrayList<>();
         boolean showImages = sharedPrefs.getBoolean(context.getString(R.string.settings_show_images_key), true);
         if (showImages) {
-            list.add("thumbnail");
+            list.add(context.getString(R.string.thumbnail));
         }
 
         int bodyTextLength = Integer.parseInt(sharedPrefs.getString(
                 context.getString(R.string.settings_show_body_key),
                 context.getString(R.string.settings_show_body_default)));
         if (bodyTextLength != Integer.parseInt(context.getString(R.string.settings_show_body_None_value))) {
-            list.add("bodyText");
+            list.add(context.getString(R.string.bodyText));
         }
         if (!list.isEmpty()) {
             urlCreator.addShowFieldsQuery(list);
@@ -113,34 +116,30 @@ final class QueryUtils {
  * Helper object to parametrize query to generate proper URL.
  */
 class URLCreator {
-    private static final String API_KEY = "edbd5c14-5eed-4f30-ba18-8b621faf2b5b";
-    private static final String GUARDIAN_DOMAIN = "https://content.guardianapis.com/search?";
-
     private Uri.Builder query;
+    private Context context;
 
     public String createLink() {
-        query.appendQueryParameter("api-key", API_KEY);
+        query.appendQueryParameter(context.getString(R.string.api_param),
+                context.getString(R.string.api_key));
         return query.toString();
     }
 
-    URLCreator(String searchQuery) {
-        query = Uri.parse(GUARDIAN_DOMAIN).buildUpon();
+    URLCreator(String searchQuery, Context context) {
+        this.context = context;
+        query = Uri.parse(this.context.getString(R.string.guardian_domain)).buildUpon();
         if (searchQuery.equals("")) {
             return;
         }
-        query.appendQueryParameter("q", searchQuery);
+        query.appendQueryParameter(context.getString(R.string.search_param), searchQuery);
     }
 
     public void orderBy(String orderType) {
-        query.appendQueryParameter("order-by", orderType);
+        query.appendQueryParameter(context.getString(R.string.order_by_param), orderType);
     }
 
     public void addTagQuery(String references) {
-        query.appendQueryParameter("show-tags", references);
-    }
-
-    public void addShowFieldsQuery(String fields) {
-        query.appendQueryParameter("show-fields", fields);
+        query.appendQueryParameter(context.getString(R.string.show_tags_param), references);
     }
 
     public void addShowFieldsQuery(List<String> fields ) {
@@ -148,17 +147,17 @@ class URLCreator {
         String prefix = "";
         for (String field:fields) {
             fieldsToShow.append(prefix);
-            prefix = ",";
+            prefix = context.getString(R.string.separator);
             fieldsToShow.append(field);
         }
-        query.appendQueryParameter("show-fields", fieldsToShow.toString());
+        query.appendQueryParameter(context.getString(R.string.show_fields_param), fieldsToShow.toString());
     }
 
     /**
      * 	Modify the number of items displayed per page	Integer	1 to 50
      */
     public void addSizeQuery(int size){
-        query.appendQueryParameter("page-size", Integer.toString(size));
+        query.appendQueryParameter(context.getString(R.string.page_size_param), Integer.toString(size));
     }
 
 }
@@ -293,30 +292,32 @@ class Downloader {
  */
 class Parser {
     private String json;
+    private Context context;
 
-    Parser(String rowData) {
+    Parser(String rowData, Context context) {
         json = rowData;
+        this.context = context;
     }
 
     private ArrayList<Story> parseResults(JSONArray resultsArray) throws JSONException{
         ArrayList<Story> stories = new ArrayList<>();
         for (int i = 0; i < resultsArray.length(); i++) {
             JSONObject currentStory = resultsArray.getJSONObject(i);
-            stories.add(new Story(
-                    currentStory.getString("webUrl"),
-                    currentStory.getString("webTitle"),
-                    currentStory.getString("sectionName"),
+            stories.add(new Story(context,
+                    currentStory.getString(context.getString(R.string.parse_webUrl)),
+                    currentStory.getString(context.getString(R.string.parse_webTitle)),
+                    currentStory.getString(context.getString(R.string.parse_sectionName)),
                     getAuthors(currentStory),
                     getWebPublicationDate(currentStory),
-                    getField(currentStory,"thumbnail"),
-                    getField(currentStory,"bodyText")
+                    getField(currentStory,context.getString(R.string.parse_thumbnail)),
+                    getField(currentStory,context.getString(R.string.parse_bodyText))
             ));
         }
         return stories;
     }
 
     private String getWebPublicationDate(JSONObject currentStory) throws JSONException {
-        String webPublicationDateKey = "webPublicationDate";
+        String webPublicationDateKey = context.getString(R.string.parse_webPublicationDate);
         if (currentStory.has(webPublicationDateKey)) {
             return currentStory.getString(webPublicationDateKey);
         } else{
@@ -326,8 +327,7 @@ class Parser {
 
     @Nullable
     private ArrayList<String> getAuthors(JSONObject currentStory) throws JSONException {
-        String tagsKey = "tags";
-
+        String tagsKey = context.getString(R.string.parse_tags);
         ArrayList<String> authors = new ArrayList<>();
 
         if (currentStory.has(tagsKey)) {
@@ -350,9 +350,9 @@ class Parser {
 
     @Nullable
     private String getAuthor(JSONObject currentTag) throws JSONException {
-        String typeKey = "type";
-        String typeValue = "contributor";
-        String authorKey = "webTitle";
+        String typeKey = context.getString(R.string.parse_type);
+        String typeValue = context.getString(R.string.parse_contributor);
+        String authorKey = context.getString(R.string.parse_contributor_name);
         if (currentTag.has(typeKey) && currentTag.get(typeKey).equals(typeValue) && currentTag.has(authorKey)) {
             return currentTag.getString(authorKey);
         }
@@ -361,7 +361,7 @@ class Parser {
 
     @Nullable
     private String getField(JSONObject currentStory, String key) throws JSONException {
-        String fieldKey = "fields";
+        String fieldKey = context.getString(R.string.parse_fields);
 
         if (currentStory.has(fieldKey)) {
             JSONObject fieldObject = currentStory.getJSONObject(fieldKey);
@@ -374,9 +374,8 @@ class Parser {
 
     public List<Story> createList() throws JSONException {
         JSONObject baseJson = new JSONObject(json);
-        JSONObject responseJson = baseJson.getJSONObject("response");
-        JSONArray storiesArray = responseJson.getJSONArray("results");
+        JSONObject responseJson = baseJson.getJSONObject(context.getString(R.string.parse_response));
+        JSONArray storiesArray = responseJson.getJSONArray(context.getString(R.string.parse_results));
         return parseResults(storiesArray);
     }
-
 }

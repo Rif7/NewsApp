@@ -1,6 +1,8 @@
 package com.example.android.newsapp;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
@@ -18,6 +20,7 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class TestDownloader {
     private String response;
+    private Context appContext;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -28,6 +31,12 @@ public class TestDownloader {
         Log.d("START TEST", "START TEST");
     }
 
+    @Before
+    public void setContext() {
+        appContext = InstrumentationRegistry.getTargetContext();
+        ConnectionException.initializeMessages(appContext);
+    }
+
     @After
     public void logResponse() {
         Log.d("END TEST Response:", response);
@@ -35,7 +44,7 @@ public class TestDownloader {
 
     @Test
     public void testNotNullResponse() throws ConnectionException {
-        URLCreator urlCreator = new URLCreator("");
+        URLCreator urlCreator = new URLCreator("", appContext);
         Downloader downloader = new Downloader(urlCreator.createLink());
         response = downloader.crateRowData();
         assertNotNull(response);
@@ -58,13 +67,9 @@ public class TestDownloader {
     }
 
     @Test
-    public void testResponse() throws ConnectionException, NoSuchFieldException, IllegalAccessException {
-        Field field = URLCreator.class.getDeclaredField("API_KEY");
-        field.setAccessible(true);
-        String key = (String )field.get(null);
-
+    public void testResponse() throws ConnectionException {
         String expectedResponse= "{\"response\":{\"status\":\"ok\",\"userTier\":\"developer\",\"total\":1,\"content\":{\"id\":\"business/2014/feb/18/uk-inflation-falls-below-bank-england-target\",\"type\":\"article\",\"sectionId\":\"business\",\"sectionName\":\"Business\",\"webPublicationDate\":\"2014-02-18T11:02:45Z\",\"webTitle\":\"UK inflation falls below Bank of England's 2% target\",\"webUrl\":\"https://www.theguardian.com/business/2014/feb/18/uk-inflation-falls-below-bank-england-target\",\"apiUrl\":\"https://content.guardianapis.com/business/2014/feb/18/uk-inflation-falls-below-bank-england-target\",\"isHosted\":false,\"pillarId\":\"pillar/news\",\"pillarName\":\"News\"}}}";
-        Downloader downloader = new Downloader("https://content.guardianapis.com/business/2014/feb/18/uk-inflation-falls-below-bank-england-target?api-key=" + key);
+        Downloader downloader = new Downloader("https://content.guardianapis.com/business/2014/feb/18/uk-inflation-falls-below-bank-england-target?api-key=" + appContext.getString(R.string.api_key));
         response = downloader.crateRowData();
         assertEquals(expectedResponse, response);
     }
