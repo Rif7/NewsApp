@@ -116,8 +116,8 @@ final class QueryUtils {
  * Helper object to parametrize query to generate proper URL.
  */
 class URLCreator {
-    private Uri.Builder query;
-    private Context context;
+    private final Uri.Builder query;
+    private final Context context;
 
     public String createLink() {
         query.appendQueryParameter(context.getString(R.string.api_param),
@@ -291,8 +291,8 @@ class Downloader {
  * Object responsible to prepare organize data from json and create objects.
  */
 class Parser {
-    private String json;
-    private Context context;
+    private final String json;
+    private final Context context;
 
     Parser(String rowData, Context context) {
         json = rowData;

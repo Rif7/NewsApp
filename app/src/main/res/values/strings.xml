@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">NewsApp</string>
 
     <!-- Strings For Main Activity -->
@@ -58,7 +58,7 @@
     <string name="guardian_domain">https://content.guardianapis.com/search?</string>
 
     <string name="api_param">api-key</string>
-    <string name="api_key">edbd5c14-5eed-4f30-ba18-8b621faf2b5b</string>
+    <string name="api_key" tools:ignore="TypographyDashes">edbd5c14-5eed-4f30-ba18-8b621faf2b5b</string>
 
     <string name="search_param">q</string>
 
@@ -114,6 +114,13 @@
     <string name="connection_exception_PREPARE_STREAM">Problem with preparing the stream.</string>
     <string name="connection_exception_READ_STREAM">Problem with reading from stream.</string>
     <string name="connection_exception_CLOSE_STREAM">Problem with closing the stream.</string>
-    
+
+    <!-- Placeholder data  -->
+    <string name="placeholder_data_music">Music</string>
+    <string name="placeholder_data_month_year">14 Nov</string>
+    <string name="placeholder_data_year">2006</string>
+    <string name="placeholder_data_title">Malcom McLaren: The svengali who created carnage</string>
+    <string name="placeholder_data_content">As the grandson of penniless refugees from Tsarist pogroms, one of them the victim of a racist murder in Britain</string>
+    <string name="placeholder_data_author">Tim Jonze</string>
 
 </resources>

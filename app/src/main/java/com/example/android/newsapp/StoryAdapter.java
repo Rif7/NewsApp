@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,15 +22,16 @@ import java.util.Date;
 import java.util.List;
 
 class StoryAdapter extends ArrayAdapter<Story> {
-    private ArrayList<String> sections;
+    private final ArrayList<String> sections;
 
     public StoryAdapter(Context context, List<Story> stories) {
         super(context, 0, stories);
         sections = new ArrayList<>();
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(
                     R.layout.story_item, parent, false);

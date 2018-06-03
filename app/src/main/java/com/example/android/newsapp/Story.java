@@ -11,19 +11,19 @@ import java.util.Date;
 import java.util.Locale;
 
 class Story {
-    private Context context;
+    private final Context context;
 
-    private String webUrl;
-    private String webTitle;
-    private String sectionName;
+    private final String webUrl;
+    private final String webTitle;
+    private final String sectionName;
 
     // can be null
-    private ArrayList<String> authors;
-    private Date webPublicationDate;    // webPublicationDate is received as ISO_INSTANT format
+    private final ArrayList<String> authors;
+    private final Date webPublicationDate;    // webPublicationDate is received as ISO_INSTANT format
                                         // "2018-02-21T16:50:39Z"
-    private String imageUrl;
-    Bitmap image;
-    private String bodyText;
+    private final String imageUrl;
+    private Bitmap image;
+    private final String bodyText;
 
     Story(Context context, String webUrl, String webTitle, String sectionName,
           ArrayList<String> authors, String webPublicationDate, String imageUrl, String bodyText) {
