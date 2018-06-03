@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<List<Story>>,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private String searchQuery;
+    private static String searchQuery = null;
     private StoryAdapter storyAdapter;
     private TextView emptyListViewMessage;
     private ProgressBar loadingIndicator;
@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        searchQuery = getString(R.string.initial_search);
 
         // Set adapter fot ListView
         ListView storyListView = findViewById(R.id.main_list);
@@ -57,7 +56,6 @@ public class MainActivity extends AppCompatActivity
         // Set View for no elements in list
         loadingIndicator = findViewById(R.id.main_loading_indicator);
 
-
         // Set an item click listener on the ListView
         storyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -71,6 +69,11 @@ public class MainActivity extends AppCompatActivity
 
         // Search new information
         SearchView newStorySearchView = findViewById(R.id.main_search);
+        if (searchQuery == null) {
+            searchQuery = getString(R.string.initial_search);
+        } else {
+            newStorySearchView.setQuery( searchQuery, false);
+        }
         newStorySearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {

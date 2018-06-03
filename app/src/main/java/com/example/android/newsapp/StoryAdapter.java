@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -65,11 +66,19 @@ class StoryAdapter extends ArrayAdapter<Story> {
             authorsView.setVisibility(View.GONE);
         }
 
+        // Set image view and depending on the image visibility set title position
         Bitmap image = story.getImage();
         ImageView imageView = convertView.findViewById(R.id.story_item_image);
+        RelativeLayout.LayoutParams webTitleViewPositionParameters =
+                (RelativeLayout.LayoutParams) webTitleView.getLayoutParams();
         if(image != null) {
             imageView.setVisibility(View.VISIBLE);
             imageView.setImageBitmap(image);
+            webTitleViewPositionParameters.addRule(RelativeLayout.BELOW, imageView.getId());
+
+        } else {
+            imageView.setVisibility(View.GONE);
+            webTitleViewPositionParameters.addRule(RelativeLayout.END_OF, dateView.getId());
         }
 
         TextView bodyTextView = convertView.findViewById(R.id.story_item_body_text);

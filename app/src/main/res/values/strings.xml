@@ -45,7 +45,7 @@
     <string name="settings_show_body_all_value">-1</string>
 
     <!-- Strings For page size Preference -->
-    <string name="settings_page_size_label">Show number of articles</string>
+    <string name="settings_page_size_label">Number of articles</string>
     <string name="settings_page_size_key">page_size</string>
     <string name="settings_page_size_default">@string/settings_page_size_10_value_label</string>
 
